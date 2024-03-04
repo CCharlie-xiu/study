@@ -63,12 +63,5 @@ const { showdialog, editData, handlerCreate, handlerEdit, onDialogClose, handler
 </script>
 
 <style lang="less" scoped>
-.search-area {
-    margin-top: 20px;
-    display: flex;
-    .search-input {
-        min-width: 200px;
-        margin-right: 20px;
-    }
-}
+
 </style>
