@@ -9,7 +9,5 @@
 </script>
 
 <style lang="less" scoped>
-.page {
-    padding: 24px;
-}
+
 </style>

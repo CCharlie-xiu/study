@@ -1,5 +1,5 @@
 <template>
-    <t-aside :width="appStore.menucollapse ? '64px':'232px'">
+    <t-aside :width="appStore.menucollapse ? '64px':'220px'">
         <t-menu :collapsed="appStore.menucollapse" :defaultValue="$route.name">
             <SiderBarItem v-for="item in permissionStore.menuRoutes" :key="item.name" :item="item"></SiderBarItem>
         </t-menu>
@@ -15,4 +15,4 @@ const permissionStore = usePermissionStore()
 </script>
 
 <style scoped>
-</style>
+</style>q

@@ -15,6 +15,16 @@
             <template #operation="slotProps">
                 <t-button v-permission="PermissionEnum.USER_LIST_EDIT" variant="text" theme="primary" @click="handlerEdit(slotProps)">edit</t-button>
             </template>
+            <template #roles="slotProps">
+                <t-tag
+                  v-for="(role, index) in slotProps.row.roles"
+                  :key="index"
+                  theme="primary"
+                  variant="light"
+                  style="margin-right: 8px; cursor: pointer"
+                  >{{ role }}
+                </t-tag>
+            </template>
         </t-table>
     </t-card>
     <edit-dialog :show="showdialog" :data="editData" @close="onDialogClose" @confirm="handlerConfirm"></edit-dialog>
@@ -51,13 +61,6 @@ const searchKey = reactive({
         name: "",
 })
 const {data, pagination, loading, fetchData, onPageChange} = useSearch<UserType,{name:string;}>(userApi,searchKey)
-const defaultData: UserType = {
-    id: "",
-    username: "",
-    nickname: "",
-    roles: [],
-    permissions: []
-}
 const { showdialog, editData, handlerCreate, handlerEdit, onDialogClose, handlerConfirm } = useEditDialog<UserType,UserCreateRequest>(userApi,"user")
 
 </script>

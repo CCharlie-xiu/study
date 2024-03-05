@@ -1,6 +1,6 @@
 <template>
     <t-dialog :visible="visible" @close="$emit('close')" :header="user.id ? 'edit':'create'" width="900px" @confirm="handleConfirm">
-        <t-form ref="form" v-if="user" :data="user" :rules="rules">
+        <t-form ref="form" v-if="user" :data="user" :rules="rules" class="dialog-form">
             <t-form-item label="username" name="username">
                 <t-input placeholder="write in username" v-model="user.username"></t-input>
             </t-form-item>

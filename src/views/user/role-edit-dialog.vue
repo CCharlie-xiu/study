@@ -1,11 +1,22 @@
 <template>
     <t-dialog :visible="visible" @close="$emit('close')" :header="role.id ? 'edit':'create'" width="900px" @confirm="handleConfirm">
-        <t-form ref="form" :data="role" :rules="rules">
+        <t-form ref="form" :data="role" :rules="rules" class="dialog-form">
             <t-form-item label="username" name="name">
-                <t-input placeholder="write in username" v-model="role.name"></t-input>
+                <t-input v-if="role.id" disabled :value="role.name"></t-input>
+                <t-input v-if="!role.id" placeholder="write in username" v-model="role.name"></t-input>
             </t-form-item>
             <t-form-item label="nickname" name="label">
                 <t-input placeholder="write in nickname" v-model="role.label"></t-input>
+            </t-form-item>
+            <t-form-item label="permissions" name="permissions">
+                <t-tree
+                :data="permissionsTree"
+                hover
+                expand-all
+                :checkable="true"
+                value-mode="all"
+                v-model="role.permissions"
+              />
             </t-form-item>
         </t-form>
     </t-dialog>
@@ -15,6 +26,7 @@
 import { computed, ref, watch } from 'vue';
 import type {Ref} from "vue";
 import type {RoleType} from "@/api/types"
+import {permissionsTree} from "@/config/permission.config"
 interface Props {
     show : boolean;
     data : RoleType | null;

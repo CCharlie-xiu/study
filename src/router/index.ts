@@ -1,11 +1,13 @@
 
-import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteRecordName, type RouteRecordRaw } from 'vue-router'
 import layoutviews from '@/views/common/layout.vue'
 import loginviews from '@/views/login/index.vue'
 import pageLayoutviews from '@/views/common/page-layout.vue'
 import { useAppStore } from '@/store'
 import { PermissionEnum } from '@/config/permission.config';
-
+import notfoundviews from '@/views/error/notfound.vue'
+import notallowedviews from '@/views/error/notallowed.vue'
+import { usePermissionStore } from '@/store/permission'
 declare module 'vue-router' {
     interface RouteMeta extends Record<string | number | symbol, undefined> {
         permission: string;
@@ -21,8 +23,15 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/login',
         component: loginviews,
         name: "login",
-    },
-    {
+    },{
+        path: '/:pathMatch(.*)*',
+        component: notfoundviews,
+        name: "notfound",
+    },{
+        path: '/403',
+        component: notallowedviews,
+        name: "notallowed",
+    },{
         path: '/',
         name: MENU_ROUTE_NAME,
         component: layoutviews,
@@ -84,15 +93,20 @@ const router = createRouter({
     )
 })
 
-const whiteList = ["/login"]
+const whiteList: Array<RouteRecordName | undefined | null> = ["login","notfound","notallowed"]
 
 router.beforeEach((to,from,next) => {
     const appStore = useAppStore()
     if(!appStore.token) {
-        whiteList.indexOf(to.path) !== -1 ? next() : next(`/login?redirect=${to.path}`)
+        whiteList.indexOf(to.name) !== -1 ? next() : next(`/login?redirect=${to.path}`)
     } 
-    if(appStore.token && to.path === 'login') {
+    if(appStore.token && to.path === '/login') {
         next({ name: "dashboard"})
+    }
+    if(to.name) {
+        const permissionStore = usePermissionStore()
+        const hasNoPermission = !permissionStore.permissionRouteNamesList.includes(to.name)
+        appStore.token && hasNoPermission && whiteList.indexOf(to.name) !== -1 && next({name:"notallowed"})
     }
     next()
 })

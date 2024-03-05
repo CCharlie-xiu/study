@@ -4,7 +4,7 @@
             <sidebar></sidebar>
             <t-layout>
               <GlobalHeader></GlobalHeader>
-              <t-content><router-view></router-view></t-content>
+              <t-content class="content-layout"><router-view></router-view></t-content>
               <t-footer>Footer</t-footer>
             </t-layout>
         </t-layout>
@@ -19,5 +19,9 @@ import sidebar from "./sidebar.vue"
 <style scoped lang="less">
 .main-layout {
     height: 100vh;
+    .content-layout {
+        padding: 24px;
+        
+    }
 }
 </style>
