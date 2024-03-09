@@ -13,7 +13,17 @@ export type UserType = {
     username: string;
     nickname: string;
     roles: Array<string>;
-    permissions: Array<string>;
+    permissions:Array<string>;
+    address: string;
+}
+
+export type dashboardType = {
+    data: any;
+    icon: string;
+    title: string;
+    color: string;
+    number: number;
+    unit: string;
 }
 
 export interface Paging {
@@ -42,7 +52,7 @@ export interface Editable<R,T> {
 
 export interface UserCreateRequest {
     username: string;
-    nickname: string;
+    address: string;
     roles?: Array<string>;
 }
 

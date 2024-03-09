@@ -3,7 +3,7 @@
         <collapse-button v-model:collapse="appStore.menucollapse"></collapse-button>
         <div class="operation-area">
             <t-dropdown :options="[{content:'exit', value: 'logout'}]" :min-column-width="112" @click="clickHandler">
-                <t-button>
+                <t-button style="margin-right: 20px;">
                     <template #icon>
                         <icon name="user"></icon>
                     </template>
@@ -43,6 +43,6 @@ const clickHandler = async ({value}:DropdownOption) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 16px;
+    min-height: 52px;
 }
 </style>

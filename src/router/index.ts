@@ -64,7 +64,7 @@ export const routes: Array<RouteRecordRaw> = [
                         path: 'list',
                         component: () => import('@/views/user/index.vue'),
                         meta: {
-                            title: '用户列表',
+                            title: '客户列表',
                             permission: PermissionEnum.USER_LIST,
                             icon: 'user'
                         }

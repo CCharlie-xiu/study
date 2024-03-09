@@ -1,6 +1,9 @@
 <template>
-    <t-aside :width="appStore.menucollapse ? '64px':'220px'">
-        <t-menu :collapsed="appStore.menucollapse" :defaultValue="$route.name">
+    <t-aside :width="appStore.menucollapse ? '64px':'200px'">
+        <t-menu :collapsed="appStore.menucollapse" :defaultValue="$route.name" :width="appStore.menucollapse ? '64px':'200px'">
+            <template #logo>
+                <img :width="appStore.menucollapse ? '40px':'136px'" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" />
+              </template>
             <SiderBarItem v-for="item in permissionStore.menuRoutes" :key="item.name" :item="item"></SiderBarItem>
         </t-menu>
     </t-aside>

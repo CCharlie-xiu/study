@@ -1,11 +1,11 @@
 <template>
-    <t-dialog :visible="visible" @close="$emit('close')" :header="user.id ? 'edit':'create'" width="900px" @confirm="handleConfirm">
+    <t-dialog :visible="visible" @close="$emit('close')" :header="user!.id ? 'edit':'create'" width="900px" @confirm="handleConfirm">
         <t-form ref="form" v-if="user" :data="user" :rules="rules" class="dialog-form">
             <t-form-item label="username" name="username">
-                <t-input placeholder="write in username" v-model="user.username"></t-input>
+                <t-input placeholder="输入真实姓名" v-model="user.username"></t-input>
             </t-form-item>
             <t-form-item label="nickname" name="nickname">
-                <t-input placeholder="write in nickname" v-model="user.nickname"></t-input>
+                <t-input placeholder="输入用户地址" v-model="user.address"></t-input>
             </t-form-item>
             <t-form-item label="roles" name="roles">
                 <t-select :options="options" clearable multiple v-model="user.roles"></t-select>
@@ -28,7 +28,7 @@ const props = withDefaults( defineProps<Props>(),{
 })
 
 const rules = {
-    nickname: [
+    address: [
         { required: true, message: "Nickname", trigger: "blur"}
     ],username: [
         { required: true, message: "Username", trigger: "blur"}
@@ -53,7 +53,7 @@ const defaultData: UserType = {
     username: "",
     nickname: "",
     roles: [],
-    permissions: []
+    address:""
 }
 const user:Ref<UserType | null> = ref(props.data || defaultData)
 

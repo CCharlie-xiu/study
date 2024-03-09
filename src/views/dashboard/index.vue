@@ -1,57 +1,100 @@
 <template>
-    <t-row :gutter="[16,16]">
-        <t-col v-for="(card, index) in infoCards" :key="index" :span="3">
-          <InfoCard :info="card"></InfoCard>
-        </t-col>
-        <t-col :span="8">
-            <t-card :bordered="false">
-                <div style="height: 400px">
-                  <e-charts :option="options"></e-charts>
-                </div>
-            </t-card>
-        </t-col>
-        <t-col :span="4">
-            <t-card :bordered="false">
-              <div style="height: 400px">
-                <e-charts :option="options2"></e-charts>
+    <t-row :gutter="[0,6]">
+        <t-col :span="5">
+            <t-card >
+              <div v-for="(item, index) in infocard" :key="index" class="infocard">
+                <info-card :info="item"></info-card>
               </div>
             </t-card>
         </t-col>
+        <t-col :span="3" style="margin-left: 6px">
+          <t-card>
+            <div class="top" split style="margin-bottom: 5px;"> 
+              <div>公告</div>
+            <div>查看更多</div>
+            
+            </div>
+            <t-list  v-for="(item, index) in infobill" :key="index">
+              <t-list-item>
+                {{item.message}}
+              </t-list-item>
+            </t-list>
+          </t-card>
+        </t-col>
+        <t-col :span="3" style="margin-left: 6px">
+          <t-card>
+              <div>帮助文档</div>
+              <t-list split style="margin-top: 50px;">
+                <t-list-item>
+                  列表内容的描述性文字
+                </t-list-item>
+              </t-list>
+          </t-card>
+        </t-col>
+        <t-col :span="4">
+          <t-card>
+            <div style="height: 355px">
+              <e-charts :option="options2"></e-charts>
+            </div>
+          </t-card>
+        </t-col>
+        <t-col :span="7" style="margin-left: 12px">
+          <t-card>
+            <t-list split header="代操作">
+              <t-list-item>
+                列表内容的描述性文字
+                <template #action>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 执行 </t-link>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 取消 </t-link>
+                </template>
+              </t-list-item>
+            </t-list>
+          </t-card>
+          <t-card style="margin-top: 6px">
+            <t-list split header="在执行">
+              <t-list-item>
+                列表内容的描述性文字
+                <template #action>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 完成 </t-link>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 延后 </t-link>
+                </template>
+              </t-list-item>
+            </t-list>
+          </t-card>
+          <t-card style="margin-top: 6px">
+            <t-list split header="已完成">
+              <t-list-item>
+                列表内容的描述性文字
+                <template #action>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 完成 </t-link>
+                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 延后 </t-link>
+                </template>
+              </t-list-item>
+            </t-list>
+          </t-card>
+        </t-col>
+        
     </t-row>
+    <template>
+      <t-calendar />
+    </template>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+import dh from "@/api/dashboard"
 import InfoCard from '@/components/InfoCard.vue';
-const infoCards = [
-  {
-    icon: "user",
-    title: "新增用户",
-    color: "#40c9c6",
-    number: 195,
-    unit: "位",
-  },
-  {
-    icon: "chat",
-    title: "今日消息",
-    color: "#36a3f7",
-    number: 99,
-    unit: "个",
-  },
-  {
-    icon: "money-circle",
-    title: "营业额",
-    color: "#f4516c",
-    number: 365454,
-    unit: "元",
-  },
-  {
-    icon: "cart",
-    title: "订单数",
-    color: "#34bfa3",
-    number: 195,
-    unit: "个",
-  },
-];
+import {onMounted } from 'vue';
+
+const infocard = ref<any>(null);
+const infobill = ref<any>(null);
+
+onMounted(async () => {
+  const res = await dh.dashboard();
+  const ras = await dh.billboard();
+  infocard.value = res.data;
+  infobill.value = ras.data;
+});
 const options = {
   tooltip: {
     trigger: "axis",
@@ -113,11 +156,9 @@ const options = {
   ],
 };
 const options2 = {
-  legend: {
-    data: ["理想分布", "实际分布"],
-  },
+
   radar: {
-    // shape: 'circle',
+    shape: 'circle',
     indicator: [
       { name: "技术能力", max: 10 },
       { name: "沟通能力", max: 10 },
@@ -128,7 +169,6 @@ const options2 = {
   },
   series: [
     {
-      name: "Budget vs spending",
       type: "radar",
       data: [
         {
@@ -145,5 +185,12 @@ const options2 = {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.infocard {
+  display: inline-block;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+}
 </style>

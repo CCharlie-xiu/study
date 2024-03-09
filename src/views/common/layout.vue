@@ -5,7 +5,7 @@
             <t-layout>
               <GlobalHeader></GlobalHeader>
               <t-content class="content-layout"><router-view></router-view></t-content>
-              <t-footer>Footer</t-footer>
+              <t-footer style="text-align:center">Copyright @ 2023-{{ new Date().getFullYear() }} Tencent. All Rights Reserved</t-footer>
             </t-layout>
         </t-layout>
     </div>
@@ -20,8 +20,9 @@ import sidebar from "./sidebar.vue"
 .main-layout {
     height: 100vh;
     .content-layout {
-        padding: 24px;
-        
+        margin: 6px;
+        border: 2px solid #f2f2f2;
+        overflow: auto;
     }
 }
 </style>

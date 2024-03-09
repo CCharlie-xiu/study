@@ -4,7 +4,7 @@ import type {AxiosError, AxiosInstance, AxiosResponse} from "axios"
 import type { ErrorResponse } from "./types"
 import { MessagePlugin } from "tdesign-vue-next"
 
-const BASE_URL:string = "https://mock.apifox.cn/m1/1504786-0-default"
+const BASE_URL:string = "https://mock.apifox.com/m1/4093624-0-default"
 const instance: AxiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: 60000

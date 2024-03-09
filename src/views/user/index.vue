@@ -1,19 +1,19 @@
 <template>
     <t-card>
         <div class="action-area">
-            <t-button v-permission="PermissionEnum.USER_LIST_CREATE" @click="handlerCreate">create</t-button>
+            <t-button v-permission="PermissionEnum.USER_LIST_CREATE" @click="handlerCreate">添加客户</t-button>
         </div>
         <div class="search-area">
-            <t-input class="search-input" placeholder="input to search" v-model="searchKey.name"></t-input>
+            <t-input class="search-input" placeholder="查找客户" v-model="searchKey.name"></t-input>
             <t-button @click="fetchData">
                 <template #icon>
                     <t-icon name="search" />
                   </template>
             </t-button>
         </div>
-        <t-table :columns="columns" :loading="loading" row-key="index" :data="data" :pagination="pagination" @page-change="onPageChange">
+        <t-table :columns="columns" :loading="loading" :table-layout="true" row-key="index" :data="data" :pagination="pagination" @page-change="onPageChange">
             <template #operation="slotProps">
-                <t-button v-permission="PermissionEnum.USER_LIST_EDIT" variant="text" theme="primary" @click="handlerEdit(slotProps)">edit</t-button>
+                <t-button v-permission="PermissionEnum.USER_LIST_EDIT" variant="text" theme="primary" @click="handlerEdit(slotProps)">修改</t-button>
             </template>
             <template #roles="slotProps">
                 <t-tag
@@ -21,7 +21,7 @@
                   :key="index"
                   theme="primary"
                   variant="light"
-                  style="margin-right: 8px; cursor: pointer"
+                  style="margin-right: 8px; cursor: pointer; font-size: 10px"
                   >{{ role }}
                 </t-tag>
             </template>
@@ -45,16 +45,22 @@ const columns = [
         title: 'ID',
     },{
         colKey:'username',
-        title: 'Name',
+        title: '真实姓名',
     },{
         colKey:'nickname',
-        title: 'Nickname',
+        title: '昵称',
+    },{
+        colKey:'address',
+        title: '地址',
+    },{
+        colKey:'phonenumber',
+        title: '电话',
     },{
         colKey:'roles',
-        title: 'Roles',
+        title: '角色',
     },{
         colKey:'operation',
-        title: 'Operation',
+        title: '操作',
     }
 ];
 const searchKey = reactive({

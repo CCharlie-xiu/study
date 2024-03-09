@@ -1,19 +1,16 @@
 <template>
-    <t-card class="info-card" size="medium" :style="`--info-card-primary-color: ${info.color}`"
+    <div class="info-card" size="medium"
     :bordered="false">
-        <template #header>
-            <div class="header">
-              {{ info.title }}
-            </div>
-          </template>
-          <div class="info">
-            <div class="number">
-              {{ info.number.toLocaleString()
-              }}<span class="unit">{{ info.unit }}</span>
-            </div>
-            <icon class="icon" :name="info.icon"></icon>
-          </div>
-    </t-card>
+      <div class="node">
+        <icon class="icon" :name="info.icon"></icon>
+        <div class="header">
+          {{ info.title }}
+        </div>
+        <span class="num">{{ info.number.toLocaleString() }} </span>
+          <span class="unit"> {{ info.unit }}</span>
+      </div>
+        
+    </div>
 </template>
 <script setup lang="ts">
 import { Icon } from "tdesign-vue-next";
@@ -30,46 +27,32 @@ type Info = {
 
 defineProps<Props>()
 </script>
-
 <style lang="less" scoped>
-.info-card {
-  cursor: pointer;
-  transition: 0.3s;
-
-  .header {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .info {
-    display: flex;
-    justify-content: space-between;
-    justify-items: baseline;
-
+.info-card{
+  margin: 6px 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .node {
+    display: block;
     .icon {
-      font-size: 45px;
-      color: var(--info-card-primary-color);
-      transition: 0.3s;
+      font-size: 32px;
+      position: relative;
     }
-
-    .number {
-      font-size: 40px;
-
-      .unit {
-        font-size: 16px;
-        margin-left: 8px;
-      }
+    .header {
+      font-size: 16px;
+      line-height: 30px;
     }
-  }
-
-  &:hover {
-    background-color: var(--info-card-primary-color);
-    color: #fff;
-
-    .icon {
-      color: #fff;
-      transform: scale(1.3);
+    .unit {
+      font-weight: 600;
+      margin-left: 3px;
+    }
+    .num {
+      font-size: 30px;
+      line-height: 45px;
     }
   }
 }
 </style>
+
