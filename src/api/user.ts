@@ -1,4 +1,4 @@
-import type { ListResult, UserCreateRequest, UserFilter, UserType } from "./types"
+import type { ListResult, UserCreateRequest, UserFilter, UserType,PersonType } from "./types"
 import request from "@/api/request"
 
 const me = ():Promise<UserType> => {
@@ -20,9 +20,19 @@ const edit = (id:string,userEditRequest: UserCreateRequest): Promise<UserType> =
     return request.post(`/users/${id}`, userEditRequest)
 }
 
+const person = (username:string): Promise<PersonType> => {
+    return request.post("/person", {username})
+}
+
+const keys = (username:string, keys: string): Promise<KeysType> => {
+    return request.post("/keys", {username,keys})
+}
+
 export default {
     me,
     list,
     create,
-    edit
+    edit,
+    person,
+    keys
 }

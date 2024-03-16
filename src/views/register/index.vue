@@ -2,7 +2,7 @@
     <div class="login-container">
         <div class="content">
             <t-card>
-                <h1>HiuNote <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><t-button @click="handlerregister">注册</t-button></h1>
+                <h1>HiuNote </h1>
                 <div>
                   <t-form ref="form" :colon="true" :label-width="0" :data="formData" :rules="rules" @submit="handleLogin">
                     <t-form-item name="username" class="login-form">
@@ -20,9 +20,23 @@
                         </template>
                       </t-input>
                     </t-form-item>
+                    <t-form-item name="password">
+                        <t-input v-model="formData.realname" clearable placeholder="请输入真实姓名">
+                          <template #prefix-icon>
+                              <icon name="lock-on" />
+                          </template>
+                        </t-input>
+                      </t-form-item>
+                      <t-form-item name="password">
+                        <t-input v-model="formData.idcard" clearable placeholder="请输入身份证号"  :maxcharacter="20">
+                          <template #prefix-icon>
+                              <icon name="lock-on" />
+                          </template>
+                        </t-input>
+                      </t-form-item>
                 
                     <t-form-item>
-                      <t-button theme="primary" type="submit" block :loading="loading">登录</t-button>
+                      <t-button theme="primary" type="submit" block :loading="loading">注册</t-button>
                     </t-form-item>
                   </t-form>
                 </div>
@@ -35,21 +49,24 @@
 import { Icon, MessagePlugin } from 'tdesign-vue-next';
 import type { SubmitContext } from 'tdesign-vue-next';
 import { reactive,ref } from 'vue';
-import type {TokenRequest} from "../../api/types";
-import {useAppStore,useUserStore} from "../../store";
+import type {RegisterRequest} from "../../api/types";
 import { useRouter } from 'vue-router';
+import registerLogin from "@/api/token"
 
-const formData = reactive<TokenRequest>({
+const formData = reactive<RegisterRequest>({
     username: '',
-    password: ''
+    password: '',
+    realname: '',
+    idcard: ''
 })
 
 const rules = {
     username: [{ required: true, message: '请输入账户名', trigger: 'blur' }],
-    password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+    idcard: [{ required: true, message: '请输入身份证号', trigger: 'blur' }]
 }
-const appStore = useAppStore()
-const userStore = useUserStore()
+
 const router = useRouter()
 const loading = ref(false)
 const handleLogin = async ({validateResult}: SubmitContext) => {
@@ -58,17 +75,17 @@ const handleLogin = async ({validateResult}: SubmitContext) => {
   }
   loading.value = true
   try {
-    await appStore.login(formData)
-    await userStore.fetchCurrentUser()
-    await MessagePlugin.success("success login")
-    await router.push({name: 'dashboard'})
+    const res = await registerLogin.registerLogin(formData)
+    if(res.code === 200) {
+        await MessagePlugin.success("success register")
+        await router.push({name: 'login'})
+    }
+    else {
+        await MessagePlugin.question("register failed")
+    }
   } finally { 
     loading.value = false
   }
-}
-
-const handlerregister = () => {
-  router.push({name:'register'})
 }
 </script>
 

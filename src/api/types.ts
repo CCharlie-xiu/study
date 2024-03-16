@@ -17,6 +17,13 @@ export type UserType = {
     address: string;
 }
 
+export type RegisterRequest = {
+    username: string;
+    password: string;
+    realname: string;
+    idcard: string;
+}
+
 export type dashboardType = {
     data: any;
     icon: string;
@@ -24,6 +31,14 @@ export type dashboardType = {
     color: string;
     number: number;
     unit: string;
+}
+
+export type todolistType = {
+    message: string
+}
+
+export type KeysType = {
+    code: string
 }
 
 export interface Paging {
@@ -72,4 +87,43 @@ export type RoleType = {
 export interface RoleFilter extends Paging {
     name: string;
     label: string;
+}
+export interface MarkdownCreateRequest {
+  name: string;
+}
+
+export type NoteType = {
+    notename: string;
+    createtime: string;
+    keyword: string;
+    summary: string;
+    storename: string;
+}
+
+export interface MarkdownFilter extends Paging {
+  name: string;
+}
+
+export type MarkdownType = {
+  id: string;
+  name: string;
+};
+export type MarkwriteGetRequest = {
+  notename: string;
+}
+
+export interface MarkwriteFilter extends Paging {
+  name: string;
+}
+
+export type MarkwriteType = {
+  id: string;
+  name: string;
+};
+
+export type PersonType = {
+    username: string;
+    realname: string;
+    password: string;
+    ID_card: string;
 }

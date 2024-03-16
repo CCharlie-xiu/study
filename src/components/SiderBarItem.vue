@@ -24,4 +24,8 @@ defineProps({
 </script>
 
 <style lang="less" scoped>
+.t-menu__item.t-is-active {
+  background-color: #d0adfa;
+  color: #0052d9;
+}
 </style>

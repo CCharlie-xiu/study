@@ -12,7 +12,9 @@
     "generate": "plop"
   },
   "dependencies": {
+    "@kangc/v-md-editor": "^2.3.18",
     "echarts-for-vue": "^1.4.1",
+    "marked": "^12.0.1",
     "pinia": "^2.1.7",
     "tdesign-vue-next": "^1.8.1",
     "vue": "^3.4.15",

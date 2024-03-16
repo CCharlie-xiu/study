@@ -5,7 +5,7 @@
             <t-layout>
               <GlobalHeader></GlobalHeader>
               <t-content class="content-layout"><router-view></router-view></t-content>
-              <t-footer style="text-align:center">Copyright @ 2023-{{ new Date().getFullYear() }} Tencent. All Rights Reserved</t-footer>
+              <t-footer style="text-align:center">Copyright @ 2023-{{ new Date().getFullYear() }} Hiunote. All Rights Reserved</t-footer>
             </t-layout>
         </t-layout>
     </div>

@@ -1,0 +1,6 @@
+POST https://mock.apifox.com/m1/4093624-0-default/person HTTP/1.1 
+Content-Type: application/json 
+
+{
+    "username": "bighandsome"
+}

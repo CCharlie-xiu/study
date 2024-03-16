@@ -1,160 +1,97 @@
 <template>
     <t-row :gutter="[0,6]">
-        <t-col :span="5">
-            <t-card >
-              <div v-for="(item, index) in infocard" :key="index" class="infocard">
-                <info-card :info="item"></info-card>
-              </div>
-            </t-card>
-        </t-col>
-        <t-col :span="3" style="margin-left: 6px">
+        <t-col :span="12">
           <t-card>
-            <div class="top" split style="margin-bottom: 5px;"> 
-              <div>公告</div>
-            <div>查看更多</div>
-            
-            </div>
-            <t-list  v-for="(item, index) in infobill" :key="index">
-              <t-list-item>
-                {{item.message}}
-              </t-list-item>
-            </t-list>
+            <t-descriptions title="个人描述" :column="5">
+              <t-descriptions-item label="用户名">TDesign</t-descriptions-item>
+              <t-descriptions-item label="真实姓名">TDesign</t-descriptions-item>
+              <t-descriptions-item label="已有笔记"
+                ><t-statistic :value="82.76" trend="increase" color="blue" /></t-descriptions-item
+              >
+              <t-descriptions-item label="已有仓库"
+                ><t-statistic :value="82.76" trend="increase" color="orange" /></t-descriptions-item
+              >
+              <t-descriptions-item label="累计在线"
+                ><t-statistic :value="82.76" trend="increase" unit="h" color="green" /></t-descriptions-item
+              >
+            </t-descriptions>
           </t-card>
         </t-col>
-        <t-col :span="3" style="margin-left: 6px">
+        <t-col :span="12">
           <t-card>
-              <div>帮助文档</div>
-              <t-list split style="margin-top: 50px;">
-                <t-list-item>
-                  列表内容的描述性文字
+            <div class="oneline">
+              <t-tag theme="primary" size="large" variant="light" style="node">代办清单(TodoList)</t-tag><t-input placeholder="请输入代办事项" class="int" /><t-button class="btn" @click="addHandler">添加</t-button>
+            </div>
+              <t-list style="max-height: 200px" @scroll="scrollHandler">
+                <t-list-item v-for="(item,index) in todolist" :key="index">
+                  <t-list-item-meta :title=item.message />
+                  <template #action>
+                    <span>
+                      <t-link theme="primary" hover="color" style="margin-left: 16px">修改</t-link>
+                      <t-link theme="primary" hover="color" style="margin-left: 16px"> <t-tag theme="primary" size="large" variant="light">完成</t-tag></t-link>
+                    </span>
+                  </template>
                 </t-list-item>
               </t-list>
           </t-card>
         </t-col>
-        <t-col :span="4">
-          <t-card>
-            <div style="height: 355px">
-              <e-charts :option="options2"></e-charts>
-            </div>
-          </t-card>
-        </t-col>
-        <t-col :span="7" style="margin-left: 12px">
-          <t-card>
-            <t-list split header="代操作">
-              <t-list-item>
-                列表内容的描述性文字
-                <template #action>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 执行 </t-link>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 取消 </t-link>
-                </template>
-              </t-list-item>
-            </t-list>
-          </t-card>
-          <t-card style="margin-top: 6px">
-            <t-list split header="在执行">
-              <t-list-item>
-                列表内容的描述性文字
-                <template #action>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 完成 </t-link>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 延后 </t-link>
-                </template>
-              </t-list-item>
-            </t-list>
-          </t-card>
-          <t-card style="margin-top: 6px">
-            <t-list split header="已完成">
-              <t-list-item>
-                列表内容的描述性文字
-                <template #action>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 完成 </t-link>
-                  <t-link theme="primary" hover="color" style="margin-left: 16px"> 延后 </t-link>
-                </template>
-              </t-list-item>
-            </t-list>
-          </t-card>
-        </t-col>
-        
     </t-row>
-    <template>
-      <t-calendar />
-    </template>
+    <t-notification
+      class="notification"
+      placement="top-left"
+      v-if="show"
+      theme="success"
+      title="添加成功"
+      content="刚刚加入一条代办"
+      :duration="2000"
+      @duration-end="show = false"
+    />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import dh from "@/api/dashboard"
-import InfoCard from '@/components/InfoCard.vue';
 import {onMounted } from 'vue';
-
+import { useUserStore } from "@/store";
+const userStore = useUserStore()
 const infocard = ref<any>(null);
 const infobill = ref<any>(null);
-
+const todolist = ref<any>(null);
+const options = [
+  {
+    label: '2022-01-01',
+    content: '事件一',
+  },
+  {
+    label: '2022-02-01',
+    content: '事件二',
+  },
+  {
+    label: '2022-03-01',
+    content: '事件三',
+  },
+  {
+    label: '2022-04-01',
+    content: '事件四',
+  },
+];
 onMounted(async () => {
+  const user = await dh.todolist(userStore.currentUser!.nickname)
   const res = await dh.dashboard();
   const ras = await dh.billboard();
   infocard.value = res.data;
   infobill.value = ras.data;
+  todolist.value = user.data;
+  console.log(user)
 });
-const options = {
-  tooltip: {
-    trigger: "axis",
-    axisPointer: {
-      type: "cross",
-      label: {
-        backgroundColor: "#6a7985",
-      },
-    },
-  },
-  legend: {
-    data: ["w", "d", "b"],
-  },
-  toolbox: {
-    feature: {
-      saveAsImage: {},
-    },
-  },
-  grid: {
-    left: "3%",
-    right: "4%",
-    bottom: "3%",
-    containLabel: true,
-  },
-  xAxis: [
-    {
-      type: "category",
-      boundaryGap: false,
-      data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    },
-  ],
-  yAxis: [
-    {
-      type: "value",
-    },
-  ],
-  series: [
-    {
-      name: "w",
-      type: "line",
-      stack: "总量",
-      areaStyle: {},
-      data: [120, 132, 101, 134, 90, 230, 210],
-    },
-    {
-      name: "d",
-      type: "line",
-      stack: "总量",
-      areaStyle: {},
-      data: [220, 182, 191, 234, 290, 330, 310],
-    },
-    {
-      name: "b",
-      type: "line",
-      stack: "总量",
-      areaStyle: {},
-      data: [150, 232, 201, 154, 190, 330, 410],
-    },
-  ],
-};
+
+const show = ref<boolean>(false)
+const addHandler = () => {
+  show.value = true
+}
+
+
+
 const options2 = {
 
   radar: {
@@ -192,5 +129,42 @@ const options2 = {
 .top {
   display: flex;
   justify-content: space-between;
+}
+.t-timeline-horizontal {
+  min-height: 0;
+}
+.oneline {
+  display: flex;
+  margin-bottom: 16px;
+  .int {
+    margin-left: 30px;
+    width: 300px;
+  }
+  .btn {
+    margin-left: 30px;
+  }
+  .node {
+  color: #d0adfa;
+
+  }
+}
+.notification {
+  position: absolute;
+  top: 70px;
+  left: 16px;
+  z-index: 1500;
+}
+
+.t-link--theme-primary,.t-tag--primary.t-tag--light {
+  color: #651bb4;
+}
+
+.t-tag--primary.t-tag--ligh {
+  color: #d0adfa;
+}
+
+.t-button--variant-base.t-button--theme-primary  {
+  background-color: #651bb4;
+  border-color: #651bb4;
 }
 </style>

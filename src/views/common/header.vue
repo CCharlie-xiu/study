@@ -2,8 +2,8 @@
     <t-header class="header">
         <collapse-button v-model:collapse="appStore.menucollapse"></collapse-button>
         <div class="operation-area">
-            <t-dropdown :options="[{content:'exit', value: 'logout'}]" :min-column-width="112" @click="clickHandler">
-                <t-button style="margin-right: 20px;">
+            <t-dropdown :options="[{content:'退出登录', value: 'logout'}]" :min-column-width="112" @click="clickHandler">
+                <t-button style="margin-right: 20px; background-color: #651bb4; border-color:#651bb4">
                     <template #icon>
                         <icon name="user"></icon>
                     </template>
@@ -44,5 +44,6 @@ const clickHandler = async ({value}:DropdownOption) => {
     justify-content: space-between;
     align-items: center;
     min-height: 52px;
+ 
 }
 </style>

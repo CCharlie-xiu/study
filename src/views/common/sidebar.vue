@@ -2,7 +2,7 @@
     <t-aside :width="appStore.menucollapse ? '64px':'200px'">
         <t-menu :collapsed="appStore.menucollapse" :defaultValue="$route.name" :width="appStore.menucollapse ? '64px':'200px'">
             <template #logo>
-                <img :width="appStore.menucollapse ? '40px':'136px'" class="logo" src="https://www.tencent.com/img/index/menu_logo_hover.png" alt="logo" />
+                <img :width="appStore.menucollapse ? '40px':'136px'" class="logo" src="../../assets/image/onenote.png" alt="logo" />
               </template>
             <SiderBarItem v-for="item in permissionStore.menuRoutes" :key="item.name" :item="item"></SiderBarItem>
         </t-menu>
@@ -18,4 +18,8 @@ const permissionStore = usePermissionStore()
 </script>
 
 <style scoped>
-</style>q
+
+.t-default-menu .t-menu__item.t-is-active:not {
+    background-color: #d0adfa;
+}
+</style>
