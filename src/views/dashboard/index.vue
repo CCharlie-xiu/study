@@ -60,24 +60,7 @@ const userStore = useUserStore()
 const infocard = ref<any>(null);
 const infobill = ref<any>(null);
 const todolist = ref<any>(null);
-const options = [
-  {
-    label: '2022-01-01',
-    content: '事件一',
-  },
-  {
-    label: '2022-02-01',
-    content: '事件二',
-  },
-  {
-    label: '2022-03-01',
-    content: '事件三',
-  },
-  {
-    label: '2022-04-01',
-    content: '事件四',
-  },
-];
+
 onMounted(async () => {
   const user = await dh.todolist(userStore.currentUser!.nickname)
   const res = await dh.dashboard();
@@ -93,36 +76,53 @@ const addHandler = () => {
   show.value = true
 }
 
+// const options = [
+//   {
+//     label: '2022-01-01',
+//     content: '事件一',
+//   },
+//   {
+//     label: '2022-02-01',
+//     content: '事件二',
+//   },
+//   {
+//     label: '2022-03-01',
+//     content: '事件三',
+//   },
+//   {
+//     label: '2022-04-01',
+//     content: '事件四',
+//   },
+// ];
 
+// const options2 = {
 
-const options2 = {
-
-  radar: {
-    shape: 'circle',
-    indicator: [
-      { name: "技术能力", max: 10 },
-      { name: "沟通能力", max: 10 },
-      { name: "管理能力", max: 10 },
-      { name: "产品思维", max: 10 },
-      { name: "实战经验", max: 10 },
-    ],
-  },
-  series: [
-    {
-      type: "radar",
-      data: [
-        {
-          value: [10, 10, 10, 10, 10, 10],
-          name: "理想分布",
-        },
-        {
-          value: [5, 5, 3, 1, 5, 1],
-          name: "实际分布",
-        },
-      ],
-    },
-  ],
-};
+//   radar: {
+//     shape: 'circle',
+//     indicator: [
+//       { name: "技术能力", max: 10 },
+//       { name: "沟通能力", max: 10 },
+//       { name: "管理能力", max: 10 },
+//       { name: "产品思维", max: 10 },
+//       { name: "实战经验", max: 10 },
+//     ],
+//   },
+//   series: [
+//     {
+//       type: "radar",
+//       data: [
+//         {
+//           value: [10, 10, 10, 10, 10, 10],
+//           name: "理想分布",
+//         },
+//         {
+//           value: [5, 5, 3, 1, 5, 1],
+//           name: "实际分布",
+//         },
+//       ],
+//     },
+//   ],
+// };
 </script>
 
 <style scoped lang="less">
