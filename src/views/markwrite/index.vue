@@ -1,7 +1,7 @@
 <template>
     <t-card>
         <div class="search-area">
-            <t-input class="search-input" placeholder="根据关键词查找笔记"></t-input>
+            <t-input class="search-input" placeholder="根据关键词查找笔记" ></t-input>
             <t-button >
                 <template #icon>
                     <t-icon name="search" />
@@ -28,8 +28,8 @@
   
   <script lang="ts" setup>
   import markwriteApi from "@/api/markwrite";
-import { MessagePlugin, type DrawerProps } from "tdesign-vue-next";
-  import { onMounted,ref } from "vue";
+  import { MessagePlugin, type DrawerProps, type PaginationProps } from "tdesign-vue-next";
+  import { onMounted,reactive,ref } from "vue";
 
   const infoCard = ref<any>(null)
   onMounted(async () => {
@@ -57,5 +57,6 @@ import { MessagePlugin, type DrawerProps } from "tdesign-vue-next";
     MessagePlugin.info('数据保存成功!');
   }, 1000);
 };
+
   </script>
   <style lang="less" scoped></style>

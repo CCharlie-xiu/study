@@ -127,3 +127,10 @@ export type PersonType = {
     password: string;
     ID_card: string;
 }
+
+export type MarkCreateType = {
+    text: string;
+    storename: string;
+    notename: string;
+    keys: string;
+}

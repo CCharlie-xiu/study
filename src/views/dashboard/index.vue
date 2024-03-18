@@ -2,7 +2,7 @@
     <t-row :gutter="[0,6]">
         <t-col :span="12">
           <t-card>
-            <t-descriptions title="个人描述" :column="5">
+            <t-descriptions title="个人描述" :column="6">
               <t-descriptions-item label="用户名">TDesign</t-descriptions-item>
               <t-descriptions-item label="真实姓名">TDesign</t-descriptions-item>
               <t-descriptions-item label="已有笔记"
@@ -14,8 +14,11 @@
               <t-descriptions-item label="累计在线"
                 ><t-statistic :value="82.76" trend="increase" unit="h" color="green" /></t-descriptions-item
               >
+              <t-descriptions-item label=""><img style="height:64px" src="@/assets/image/dash.png" alt=""></t-descriptions-item>
             </t-descriptions>
+            
           </t-card>
+          
         </t-col>
         <t-col :span="12">
           <t-card>

@@ -126,6 +126,12 @@
 
     const checkOut = () => {
         console.log('Checking out')
+        MessagePlugin.info('数据保存中...', 1000);
+        const timer = setTimeout(() => {
+          clearTimeout(timer);
+          MessagePlugin.info('数据保存成功!');
+          seesable.value = false
+        }, 1000);
     }
 
 </script>

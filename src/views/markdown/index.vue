@@ -1,7 +1,7 @@
 <template>
     <div class="topnav">
         <t-input-adornment prepend="标题">
-            <t-input placeholder="请输入内容" v-model="title" />
+            <t-input placeholder="请输入内容" v-model="notename" />
         </t-input-adornment>
         <t-button theme="primary" class="btn" @click="handlerSave">
             保存
@@ -12,7 +12,9 @@
   </template>
   
   <script>
+  import markwrite from '@/api/markwrite';  
   import MarkDialog from '@/views/markdown/mark-dialog.vue'
+  import { MessagePlugin } from 'tdesign-vue-next';
   export default {
     components: {
         MarkDialog
@@ -20,8 +22,9 @@
     data() {
       return {
         text: '',
-        title: '',
-        showdialog: false
+        notename: '',
+        showdialog: false,
+        formData: {} 
       };
     },
     methods: {
@@ -29,8 +32,17 @@
             this.showdialog = true
             console.log("1")
         },
-        handlerConfirm() {
-            this.showdialog = false
+        async handlerConfirm(formData) {
+            MessagePlugin.info('数据保存中...', 1000);
+            const timer = setTimeout(async () => {
+              clearTimeout(timer);
+              this.showdialog = false
+              const { storename, keys } = formData;
+              const res = await markwrite.create(this.notename,this.text,storename,keys)
+              console.log(this.notename,this.text,storename,keys,res,this.formData);
+              MessagePlugin.info('数据保存成功!');
+            }, 1000);
+           
         },
         onDialogClose() {
             this.showdialog = false
