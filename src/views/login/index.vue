@@ -59,7 +59,7 @@ const handleLogin = async ({validateResult}: SubmitContext) => {
   loading.value = true
   try {
     await appStore.login(formData)
-    await userStore.fetchCurrentUser()
+    await userStore.fetchCurrentUser(formData.username)
     await MessagePlugin.success("success login")
     await router.push({name: 'dashboard'})
   } finally { 

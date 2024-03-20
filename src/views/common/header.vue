@@ -7,7 +7,7 @@
                     <template #icon>
                         <icon name="user"></icon>
                     </template>
-                    {{userStore.currentUser && userStore.currentUser?.nickname}}
+                    {{userStore.currentUser && userStore.currentUser}}
                 </t-button>
             </t-dropdown>
         </div>

@@ -6,8 +6,8 @@ import type {
 } from "@/api/types";
 import request from "@/api/request";
 
-const list = (): Promise<NoteType> => {
-  return request.get("/list");
+const list = (username:string): Promise<Array<any>> => {
+  return request.post("/notelist",{username});
 };
 
 const searchList = (notename: string): Promise<NoteType> => {
@@ -21,13 +21,33 @@ const edit = (
   return request.post(`/markwrites/${id}`, markwriteEditRequest);
 };
 
-const create = (text:string, storename: string,notename: string,keys: string): Promise<MarkCreateType> => {
-  return request.post("/createnote",{text,storename,notename,keys});
+const create = (text:string, storename: string,notename: string,keysword: string,username:string): Promise<MarkCreateType> => {
+  return request.post("/createnote",{text,storename,notename,keysword,username});
+}
+
+const deleteNote = (username:string, notename:string):Promise<number> => {
+  return request.post("/deletenote",{username,notename})
+} 
+
+const sreachNote = (Keysword:string): Promise<Array<string>> =>{
+  return request.post("/notesearch",{Keysword});
+}
+
+const addressNote = (username:string, notename:string): Promise<string> =>{
+  return request.post("/shownote",{username,notename})
+}
+
+const notestore = (username:string, storename:string): Promise<string> => {
+  return request.post("/notestore",{username,storename})
 }
 
 export default {
   list,
   searchList,
   edit,
-  create
+  create,
+  deleteNote,
+  sreachNote,
+  addressNote,
+  notestore
 };

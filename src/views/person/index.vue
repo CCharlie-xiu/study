@@ -12,12 +12,12 @@
         <div class="profile-person-notice">
             <div class="profile-graph">
                 <div class="title">昵称</div>
-                <div class="title nodes">{{ columns.username }}</div>
+                <div class="title nodes">{{ columns.Username }}</div>
                 <button class="touch-change">更换个人昵称可帮助您个性化您的账号</button>
             </div>
             <div class="profile-graph">
                 <div class="title">实名</div>
-                <div class="title nodes">{{ columns.realname }}</div>
+                <div class="title nodes">{{ columns.RealName }}</div>
                 <button class="touch-change">更换绑定实名可帮助您个性化您的账号</button>
             </div>
             <div class="profile-graph">
@@ -48,23 +48,23 @@
     <div class="div">
         <div class="flex">
             <t-input-adornment prepend="用户名">
-                <t-input v-model="userDetails.username" />
+                <t-input v-model="userDetails.Username" />
             </t-input-adornment>
             <br>
             <t-input-adornment prepend="真实姓名">
-                <t-input v-model="userDetails.realname"/>
+                <t-input v-model="userDetails.RealName"/>
             </t-input-adornment>
             <br>
             <t-input-adornment prepend="身份证号">
-                <t-input v-model="userDetails.id_card"/>
+                <t-input v-model="userDetails.IDCard"/>
             </t-input-adornment>
             <br>
             <t-input-adornment prepend="密码">
-                <t-input v-model="userDetails.password"/>
+                <t-input v-model="userDetails.Password"/>
             </t-input-adornment>
             <br>
             <t-input-adornment prepend="密钥">
-                <t-input v-model="userDetails.keys"/>
+                <t-input v-model="userDetails.KeysConfirm"/>
             </t-input-adornment>
         </div>
     </div>
@@ -74,25 +74,28 @@
 <script setup lang="ts">
     import { MessagePlugin } from 'tdesign-vue-next'
     import { ref,onMounted, watch} from "vue"
-    import { useUserStore } from "@/store";
+    import { useAppStore, useUserStore } from "@/store";
     import userApi from '@/api/user';
+import router from '@/router';
+import { useRoute } from 'vue-router';
     const visible = ref(false);
     const seesable = ref(false);
     const userStore = useUserStore()
     const userDetails = ref({
-        "username": "",
-        "realname": "",
-        "id_card": "",
-        "password": "",
-        "keys": ""
+        "Username": "",
+        "RealName": "",
+        "IDCard": "",
+        "Password": "",
+        "KeysConfirm": ""
     })
     let columns = ref({
-        "username": "1",
-        "realname": "1"
+        "Username": "1",
+        "RealName": "1"
     })
+    const user = userStore.currentUser || ''
     const userInfo = ref<any>(null) 
     onMounted(async () => {
-        const res = await userApi.person(userStore.currentUser!.nickname)
+        const res = await userApi.person(user)
         userInfo.value = res
         updateColumns()
         console.log(res)
@@ -101,20 +104,23 @@
         updateColumns()
     })
 
+    const userid = ref<any>(null)
+
     const updateColumns = () => {
         if(userInfo.value) {
-            userDetails.value.username = columns.value.username = userInfo.value.username;
-            userDetails.value.realname = columns.value.realname = userInfo.value.realname;
+            userid.value = userInfo.value.IDCard
+            userDetails.value.Username = columns.value.Username = userInfo.value.Username;
+            userDetails.value.RealName = columns.value.RealName = userInfo.value.RealName;
             columns.value = { ...columns.value };
-            userDetails.value.password = userInfo.value.password;
-            userDetails.value.id_card = userInfo.value.id_card;
-            userDetails.value.keys = userInfo.value.keys;
+            userDetails.value.Password = userInfo.value.Password;
+            userDetails.value.IDCard = userInfo.value.IDCard;
+            userDetails.value.KeysConfirm = userInfo.value.KeysConfirm;
         }
     }
 
     const keys = ref<any>(null)
     const checkKeys = async () => {
-        const res = await userApi.keys(userStore.currentUser!.nickname,keys.value)
+        const res = await userApi.keys(user,keys.value)
         console.log(keys.value,res)
         if(res.code === 200) {
             seesable.value = true
@@ -123,16 +129,40 @@
             MessagePlugin.info('你没有权限访问',1000)
         }
     }
-
+    const appStore = useAppStore()
+    const route = useRoute();
     const checkOut = () => {
-        console.log('Checking out')
-        MessagePlugin.info('数据保存中...', 1000);
-        const timer = setTimeout(() => {
-          clearTimeout(timer);
-          MessagePlugin.info('数据保存成功!');
-          seesable.value = false
-        }, 1000);
-    }
+    console.log('Checking out')
+    MessagePlugin.info('数据保存中...', 1000);
+    console.log(userid.value, userDetails.value.Username, 
+                userDetails.value.Password, userDetails.value.RealName, 
+                userDetails.value.KeysConfirm, userDetails.value.IDCard);
+    const timer = setTimeout(async () => {
+        try {
+            const res = await userApi.updateuser(
+                userid.value, userDetails.value.Username, 
+                userDetails.value.Password, userDetails.value.RealName,  userDetails.value.IDCard,
+                userDetails.value.KeysConfirm);
+            if (res.code === 200) {
+                MessagePlugin.info('数据保存成功!');
+                seesable.value = false;
+                await appStore.logout()
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000); // 1000毫秒即1秒
+            } else {
+                MessagePlugin.info('数据修改失败!');
+            }
+        } catch (error) {
+            console.error("Update user error:", error);
+            MessagePlugin.info('数据修改失败!');
+        } finally {
+            clearTimeout(timer);
+            
+        }
+    }, 1000);
+}
+
 
 </script>
   

@@ -9,8 +9,9 @@ export type ErrorResponse = {
 }
 
 export type UserType = {
-    id: string;
-    username: string;
+    UserID: number;
+    Username: string;
+    Password: string;
     nickname: string;
     roles: Array<string>;
     permissions:Array<string>;
@@ -22,23 +23,31 @@ export type RegisterRequest = {
     password: string;
     realname: string;
     idcard: string;
+    KeysConfirm: string;
 }
 
 export type dashboardType = {
-    data: any;
-    icon: string;
-    title: string;
-    color: string;
-    number: number;
-    unit: string;
+    Username: string;
+    RealName: string;
+    NoteSum:  string;
+    StoreSum: string;
+    EditTime: number;
+}
+
+export type repoType = {
+    Username: string;
+    StoreName: string;
+    CreateTime:string;
+    Resume: string;
 }
 
 export type todolistType = {
-    message: string
+    data: Array<string>;
 }
 
 export type KeysType = {
-    code: string
+    CreateTime: number;
+    TodoName: string
 }
 
 export interface Paging {
@@ -129,8 +138,9 @@ export type PersonType = {
 }
 
 export type MarkCreateType = {
-    text: string;
-    storename: string;
-    notename: string;
-    keys: string;
+    // text: string;
+    // storename: string;
+    // notename: string;
+    // keys: string;
+    message: string;
 }

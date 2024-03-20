@@ -4,22 +4,21 @@ import { defineStore } from "pinia";
 import { usePermissionStore } from "./permission";
 
 type UserState = {
-    currentUser: UserType | null;
+    currentUser: string | null;
 }
 
 export const useUserStore = defineStore('user',
 {
     state:(): UserState=> {
         return {
-            currentUser: null,
+            currentUser: "",
         }
     },
     persist: true,
     actions: {
-        async fetchCurrentUser() {
-            this.currentUser = await user.me()
+        async fetchCurrentUser(value: string) {
+            this.currentUser = value
             // Todo: , this.currentUser.roles
-            usePermissionStore().generateRoutes(this.currentUser.permissions)
         },
     }
 })
