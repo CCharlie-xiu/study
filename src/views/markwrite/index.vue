@@ -39,6 +39,7 @@
   import { MessagePlugin, type DrawerProps } from "tdesign-vue-next";
   import { onMounted,ref } from "vue";
   import axios from 'axios';
+import markwrite from "@/api/markwrite";
   const userStore = useUserStore()
   const user = userStore.currentUser || ''
   let infoCard = ref<any>({})
@@ -57,29 +58,39 @@
   const deleable = ref(false);
   const header = ref<any>(null);
   const markdownText = ref<any>('');
-    const handlerOpen = async (value: any) => {
-    visible.value = true;
-    header.value = value;
-    const res = await markwriteApi.addressNote(user, value);
-    console.log(res.address);
+  const handlerOpen = async (value: any) => {
+   visible.value = true;
+   header.value = value;
+   const res = await markwriteApi.addressNote(user, value);
+   console.log(res.address);
 
-    const fileUrl = `http://localhost:8080/${res.address}`;
-    try {
-        const response = await axios.get(fileUrl);
-        markdownText.value = response.data.toString();
-        console.log('Note content:', response.data);
-    } catch (error) {
-        console.error('Error fetching note content:', error);
-    }
+   const fileUrl = `http://localhost:8080/${res.address}`;
+   try {
+       const response = await axios.get(fileUrl);
+       markdownText.value = response.data.toString();
+       console.log('Note content:', response.data);
+   } catch (error) {
+       console.error('Error fetching note content:', error);
+   }
   }
 
-  const onClickConfirm: DrawerProps['onConfirm'] = () => {
+  const onClickConfirm: DrawerProps['onConfirm'] = async () => {
     MessagePlugin.info('数据缓冲中...',1000);
-    const timer = setTimeout(async () => {
-      clearTimeout(timer);
-      visible.value = false
-      MessagePlugin.success('数据缓冲成功');
-    }, 1000);
+    console.log(header.value);
+    const res = await markwrite.updatenote(user, header.value,markdownText.value);
+    if(res.code === 200) {
+      const timer = setTimeout(async () => {
+        clearTimeout(timer);
+        visible.value = false
+        MessagePlugin.success('数据缓冲成功');
+      }, 1000);
+    } else {
+      const timer = setTimeout(async () => {
+        clearTimeout(timer);
+        MessagePlugin.success('数据缓冲失败');
+      }, 1000);
+    }
+    
   };
 
   const formatDate = (dateString:string) => {
@@ -113,7 +124,7 @@
       MessagePlugin.info('数据查询中...', 1000);
       const timer = setTimeout(async () => {
         clearTimeout(timer);
-        const res = await markwriteApi.sreachNote(keysword.value)
+        const res = await markwriteApi.sreachNote(user,keysword.value)
         infoCard.value = res
         MessagePlugin.success('加载完成!');
       }, 1000);

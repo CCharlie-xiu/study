@@ -37,14 +37,24 @@
         },
         async handlerConfirm(formData) {
             MessagePlugin.info('数据保存中...', 1000);
-            const timer = setTimeout(async () => {
-              clearTimeout(timer);
-              this.showdialog = false
-              const { storename, keys } = formData;
-              const res = await markwrite.create(this.text,storename,this.notename,keys,user)
-              console.log(this.notename,this.text,storename,keys,res,this.formData);
-              MessagePlugin.info('数据保存成功!');
-            }, 1000);
+            const { storename, keys } = formData;
+            const res = await markwrite.create(this.text,storename,this.notename,keys,user)
+            console.log(this.notename,this.text,storename,keys,res,this.formData);
+            if(res.code === 200) {
+              const timer = setTimeout(async () => {
+                clearTimeout(timer);
+                this.showdialog = false
+                
+                MessagePlugin.success('数据保存成功!');
+              }, 1000);
+            } else {
+              const timer = setTimeout(async () => {
+                clearTimeout(timer);
+                
+                MessagePlugin.info('数据紧张，重试!');
+              }, 1000);
+            }
+            
            
         },
         onDialogClose() {

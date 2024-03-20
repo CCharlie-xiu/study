@@ -29,8 +29,8 @@ const deleteNote = (username:string, notename:string):Promise<number> => {
   return request.post("/deletenote",{username,notename})
 } 
 
-const sreachNote = (Keysword:string): Promise<Array<string>> =>{
-  return request.post("/notesearch",{Keysword});
+const sreachNote = (username:string,Keysword:string): Promise<Array<string>> =>{
+  return request.post("/notesearch",{username,Keysword});
 }
 
 const addressNote = (username:string, notename:string): Promise<string> =>{
@@ -41,6 +41,10 @@ const notestore = (username:string, storename:string): Promise<string> => {
   return request.post("/notestore",{username,storename})
 }
 
+const updatenote = (username:string, notename:string,text:string): Promise<number> => {
+  return request.post("/updatenote",{username,notename,text})
+}
+
 export default {
   list,
   searchList,
@@ -49,5 +53,6 @@ export default {
   deleteNote,
   sreachNote,
   addressNote,
-  notestore
+  notestore,
+  updatenote
 };
